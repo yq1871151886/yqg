@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>商品展示页面</title>
+    <div th:replace="common::html" ></div>
+</head>
+<body>
+<div class="container">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">类型维护
+                <button type="button" onclick="addAndUpdate(1)" class="btn btn-success" data-toggle="button">新增节点</button>
+            </h3>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="ztree" id="eletricTree"></div>
+                </div>
+                <div class="col-lg-3">
+
+                </div>
+                <div class="col-lg-7">
+                    <div id="til"></div>
+                    <div id="addElectric"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script type="text/javascript" th:inline="none">
+    var electriczTreeObj,
+        eletricsetting = {
+            view: {
+                selectedMulti: false
+            },
+            callback:{
+                onClick: updateElectric
+            }
+        };
+    $(function () {
+        queryElectric();
+    })
+    function updateElectric(event, treeId, treeNode) {
+        var parentname="";
+        if (treeNode.pid != 0) {
+            parentname = treeNode.getParentNode().name;
+        }
+        var  jsondata = {};
+        jsondata.id=treeNode.id;
+        jsondata.name = parentname;
+        $.post({
+            data:jsondata,
+            url:"/electric/toElectricAddOrUpdate",
+            dataType:"html",
+            success:function (result) {
+                $("#addElectric").html(result);
+            }
+        })
+        $("#til").html("正在进行修改操作...");
+
+
+
+    }
+
+    function queryElectric() {
+        $.post({
+            url:"/electric/queryElectric",
+            dataType:"json",
+            success:function (result) {
+                electriczTreeObj = $.fn.zTree.init($("#eletricTree"), eletricsetting, result);
+            }
+        })
+    }
+
+    function addAndUpdate(s) {
+        var nodes = electriczTreeObj.getSelectedNodes();
+        var  jsondata = {};
+        var id = nodes[0].id;
+        var parentname = nodes[0].name;
+        if (s == 1) {
+            jsondata.pid=id;
+            jsondata.name=parentname;
+            $.post({
+                data:jsondata,
+                url:"/electric/toElectricAddOrUpdate",
+                dataType:"html",
+                success:function (result) {
+                    $("#addElectric").html(result);
+                }
+            })
+            $("#til").html("正在进行新增操作...");
+        }
+    }
+
+    function addOrUpdate() {
+        var nodes = electriczTreeObj.getSelectedNodes();
+        $.post({
+            data:$("#addOrUpdate").serialize(),
+            url:"/electric/addOrUpdate",
+            dataType:"json",
+            success:function (result) {
+                if (result.id != null) {
+                    var newDodes = {
+                        id:result.id,
+                        name:result.name,
+                        pid:result.pid
+                    }
+                    electriczTreeObj.addNodes(nodes[0], newDodes);
+                    bootbox.alert(result.message);
+                }else {
+                    nodes[0].name=result.name;
+                    electriczTreeObj.updateNode(nodes[0]);
+                    bootbox.alert(result.message);
+                }
+            }
+        })
+
+
+
+    }
+
+
+</script>
+
+
+</body>
+</html>

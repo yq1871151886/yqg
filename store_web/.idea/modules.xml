@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/commons/commons.iml" filepath="$PROJECT_DIR$/commons/commons.iml" />
+      <module fileurl="file://$PROJECT_DIR$/demo_first/demo_first.iml" filepath="$PROJECT_DIR$/demo_first/demo_first.iml" />
+      <module fileurl="file://$PROJECT_DIR$/store_brand_api/store_brand_api.iml" filepath="$PROJECT_DIR$/store_brand_api/store_brand_api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/store_cart_api/store_cart_api.iml" filepath="$PROJECT_DIR$/store_cart_api/store_cart_api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/store_electric_api/store_electric_api.iml" filepath="$PROJECT_DIR$/store_electric_api/store_electric_api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/store_login_api/store_login_api.iml" filepath="$PROJECT_DIR$/store_login_api/store_login_api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/store_product_api/store_product_api.iml" filepath="$PROJECT_DIR$/store_product_api/store_product_api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/store_shoplist/store_shoplist.iml" filepath="$PROJECT_DIR$/store_shoplist/store_shoplist.iml" />
+      <module fileurl="file://$PROJECT_DIR$/store_web/store_web.iml" filepath="$PROJECT_DIR$/store_web/store_web.iml" />
+    </modules>
+  </component>
+</project>

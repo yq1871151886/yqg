@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fh.dao.ElectricDao">
+    <cache-ref namespace="com.fh.dao.ElectricDao"/>
+
+        <select id="queryElectric" resultType="com.fh.bean.vo.ElectricVo">
+            select id,pid,electricName name from r_electric
+        </select>
+</mapper>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding" native2AsciiForPropertiesFiles="true" defaultCharsetForPropertiesFiles="UTF-8">
+    <file url="file://$PROJECT_DIR$/../demo_first" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/commons" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/demo_first" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/store_brand_api" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/store_brand_tain" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/store_cart_api" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/store_electric_api" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/store_electric_tain" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/store_login_api" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/store_product_api" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/store_shop_tain" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/store_shoplist" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/store_web" charset="UTF-8" />
+    <file url="PROJECT" charset="UTF-8" />
+  </component>
+</project>

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- Favicons-->
+    <link rel="icon" href="../static/commons/logincss/images/favicon/favicon-32x32.png" sizes="32x32">
+    <!-- Favicons-->
+    <link rel="apple-touch-icon-precomposed" href="../static/commons/logincss/images/favicon/apple-touch-icon-152x152.png">
+    <!-- For iPhone -->
+    <!--<meta name="msapplication-TileColor" content="#00bcd4">-->
+
+    <!-- For Windows Phone -->
+
+    <link href="../static/commons/logincss/css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection">
+    <link href="../static/commons/logincss/css/style.css" type="text/css" rel="stylesheet" media="screen,projection">
+    <link href="../static/commons/logincss/css/page-center.css" type="text/css" rel="stylesheet" media="screen,projection">
+
+    <!-- INCLUDED PLUGIN CSS ON THIS PAGE -->
+    <link href="../static/commons/logincss/css/prism.css" type="text/css" rel="stylesheet" media="screen,projection">
+    <link href="../static/commons/logincss/js/plugins/perfect-scrollbar/perfect-scrollbar.css" type="text/css" rel="stylesheet" media="screen,projection">
+    <script type="text/javascript" src="../static/commons/bootbox/bootbox.min.js"></script>
+
+    <!-- jQuery Library -->
+    <script type="text/javascript" src="../static/commons/jquery-3.2.1.js"></script>
+    <!--materialize js-->
+   <!-- <script type="text/javascript" src="../static/commons/logincss/js/jquery-1.11.2.min.js"></script>-->
+    <script type="text/javascript" src="../static/commons/logincss/js/materialize.js"></script>
+    <!--prism-->
+    <script type="text/javascript" src="../static/commons/logincss/js/prism.js"></script>
+    <!--scrollbar-->
+    <script type="text/javascript" src="../static/commons/logincss/js/plugins/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+
+    <script type="text/javascript" src="../static/commons/js/md5.js"></script>
+    <!--plugins.js - Some Specific JS codes for Plugin Settings-->
+    <script type="text/javascript" src="../static/commons/logincss/js/plugins.js"></script>
+
+
+
+
+</head>
+<body>
+<div id="login-page" class="row">
+    <div class="col s12 z-depth-4 card-panel">
+        <div class="row">
+            <div class="input-field col s12 center">
+                <img src="../static/commons/logincss/images/login-logo.png" alt="" class="circle responsive-img valign profile-image-login">
+                <p class="center login-form-text">后台管理登录</p>
+            </div>
+        </div>
+        <div class="row margin">
+            <div class="input-field col s12">
+                <i class="mdi-social-person-outline prefix"></i>
+                <input id="username" type="text">
+                <label for="username" class="center-align">账号</label>
+            </div>
+        </div>
+        <div class="row margin">
+            <div class="input-field col s12">
+                <i class="mdi-action-lock-outline prefix"></i>
+                <input id="password" type="password">
+                <label for="password">密码</label>
+            </div>
+        </div>
+        <div class="row">
+            <div>
+                <button onclick="login()" class="btn waves-effect waves-light col s12">登录</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+
+<script type="text/javascript">
+
+    $(function () {
+        /*$.ajax({
+            url:"http://localhost:8080/testApi",
+            dataType:"jsonp",
+            jsonp:"callback",
+            success:function (result) {
+                alert(result);
+            }
+        })
+
+        $.post({
+            url:"http://localhost:8080/test2Api",
+            dataType:"text",
+            success:function (result) {
+                alert(result);
+            }
+        })*/
+        $.post({
+            url:"http://localhost:8080/test3Api",
+            dataType:"text",
+            success:function (result) {
+                alert(result.sky);
+            }
+        })
+    })
+    
+    
+    
+    function login() {
+        var loginName = $("#username").val();
+        var loginPwd = $("#password").val();
+        loginPwd=hex_md5(loginPwd);
+        if (loginName.length == 0 || loginName == "") {
+            alert("用户名不能为空");
+            return false;
+        }
+        if (loginPwd.length == 0 || loginPwd == "") {
+            alert("密码不能为空");
+            return false;
+        }
+        $.post({
+            data:{
+                loginName:loginName,
+                loginPwd:loginPwd,
+            },
+            url:"/user/login",
+            dataType:"json",
+            success:function (result) {
+                if (result.code==200) {
+                    alert(result.message);
+                    window.location.href="/test/toJsp?url=view/shop/shopList";
+                }else {
+                    alert(result.message);
+                }
+            }
+        })
+
+
+    }
+
+</script>
+</body>
+</html>

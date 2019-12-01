@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>商品新增页面</title>
+
+</head>
+<body>
+<form class="layui-form" id="addShops">
+    <div class="layui-form-item">
+        <label class="layui-form-label" style="width: 100px">商品类型</label>
+        <div class="layui-input-block">
+            <div class="layui-form-select select-tree layui-form-selected">
+                <div class="layui-select-title">
+                    <input type="hidden" th:id="electricAndBrand" name="electricIds">
+                    <input id="productTypeShow" type="text" name="electric" th:id="electric" onclick="queryElectric()" placeholder="请选择,不选将被默认为一级节点" value="" class="layui-input" lay-verify="required" required="" readonly="">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label" style="width: 100px">商品品牌</label>
+        <div class="layui-input-inline">
+            <input type="hidden" id="provinceid" value="">
+            <select  lay-verify="required" lay-filter="province" name="brandId" id="province">
+                <option value="-1">-请选择-</option>
+                <option  th:each="c:${brand}"  th:value="${c.id}" th:text="${c.name}" th:selected="(${c.id} == ${shops.brandId})" value="-1"></option>
+            </select>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label" style="width: 100px">商品名称：</label>
+            <div class="layui-input-inline">
+                <input type="tel" name="name" lay-verify="required|phone" th:value="${shops.name}" autocomplete="off" class="layui-input">
+                <input type="hidden" name="id" id="stuId" th:value="${shops.id}">
+            </div>
+        </div>
+
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label" style="width: 100px">副标题：</label>
+            <div class="layui-input-inline">
+                <input type="text" name="subtitle" lay-verify="email" th:value="${shops.subtitle}" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label" style="width: 100px">描述:</label>
+            <div class="layui-input-inline">
+                <input type="text" name="detail" lay-verify="email" th:value="${shops.detail}" autocomplete="off" class="layui-input" onblur="iscard()">
+            </div>
+        </div>
+        <!--<div class="layui-inline">
+            <label class="layui-form-label" style="width: 100px">出生日期:</label>
+            <div class="layui-input-inline">
+                <input type="text" name="birthday" id="date" lay-verify="date" value="" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input" datetime>
+            </div>
+            &lt;!&ndash;<fmt:formatDate value='${stu.birthday}' pattern='yyyy-MM-dd'/>&ndash;&gt;
+        </div>-->
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label" style="width: 100px">价格：</label>
+            <div class="layui-input-inline">
+                <input type="tel" name="price" th:value="${shops.price}" lay-verify="required|phone" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label" style="width: 100px">库存：</label>
+            <div class="layui-input-inline">
+                <input type="number" name="stock" th:value="${shops.stock}" lay-verify="required|phone" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">状态：</label>
+        <div class="layui-input-block">
+            <input type="radio" name="status" th:checked="(${shops.status==1})" value="1"  title="上架">
+            <input type="radio" name="status" th:checked="(${shops.status==2})" value="2"  title="下架">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">图片上传</label>
+        <div class="col-sm-10">
+            <input type="hidden" name="mainImg" id="photos" th:value="${shops.mainImg}">
+            <input type="file" name="fileImage" id="photo">
+        </div>
+    </div>
+</form>
+
+
+<script type="text/javascript" th:inline="none">
+    layui.use(['form','laydate','layer'], function(){
+        var form = layui.form; //只有执行了这一步，部分表单元素才会自动修饰成功
+
+        //……
+
+        //但是，如果你的HTML是动态生成的，自动渲染就会失效
+        //因此你需要在相应的地方，执行下述方法来进行渲染
+        form.render();
+        //时间的选项
+        var  form = layui.form ;
+        $ = layui.jquery ;
+        laydate = layui.laydate;
+        laydate.render({     //创建时间选择框
+            elem: '#date',
+        });
+    });
+    var previewArr =[];
+    var map = $("#photos").val();
+    if (map != null && map != "") {
+        previewArr.push(map);
+    }
+    $("#photo").fileinput({
+        language:"zh",
+        showCaption:false,
+        dropZoneEnabled : false,
+        uploadUrl: "/shop/uploadImage", // 服务器接收上传文件方法
+        initialPreview:previewArr,
+        initialPreviewAsData: true, // 特别重要
+    }).on("fileuploaded",function (event, data, id, index) {
+        var ptotourl = data.response.url;
+        $("#photos").val(ptotourl);
+    });
+
+    var electriczTreeObj,
+        eletricsetting = {
+            view: {
+                selectedMulti: false
+            },
+            callback: {
+                onCheck: zTreeOnCheck
+            }
+            ,check: {
+                enable: true,
+                chkStyle: "checkbox",
+                chkboxType: { "Y": "p", "N": "s" }
+            }
+        };
+    var ids = [];
+    function queryElectric() {
+        var dialog = bootbox.dialog({
+            title: '类型选择',
+            message: '<div class="ztree" id="eletricTree"></div>',
+            size: 'large',
+            buttons: {
+                cancel: {
+                    label: "取消",
+                    className: 'btn-danger',
+                    callback: function(){
+                        console.log('Custom cancel clicked');
+                    }
+                },
+                ok: {
+                    label: "确认",
+                    className: 'btn-info',
+                    callback: function(){
+                        var names = "";
+                        var nodes = electriczTreeObj.getCheckedNodes();
+                        for (var i = 0; i < nodes.length; i++) {
+                            ids.push(nodes[i].id);
+                            names+=","+nodes[i].name;
+                        }
+                        $("#electricAndBrand").val(ids);
+                        names=names.substring(1);
+                        $("#electric").val(names);
+                        console.log('Custom OK clicked');
+                    }
+                }
+            }
+        });
+        $.post({
+            url:"/electric/queryElectric",
+            dataType:"json",
+            success:function (result) {
+                electriczTreeObj = $.fn.zTree.init($("#eletricTree"), eletricsetting, result);
+            }
+        })
+    }
+    function zTreeOnCheck(event, treeId, treeNode) {
+    }
+</script>
+
+</body>
+</html>

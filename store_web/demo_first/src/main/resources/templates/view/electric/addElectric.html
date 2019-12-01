@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>商品新增页面</title>
+
+</head>
+<body>
+<form class="form-horizontal" role="form" id="addOrUpdate">
+    <div class="form-group">
+        <label class="col-sm-2 control-label">父类型名称</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" readonly id="parentName" th:value="${parentName}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">类型名称</label>
+        <div class="col-sm-10">
+                <input type="hidden" name="pid" id="pid" th:value="${pid}">
+                <input type="hidden" name="id" id="id" th:value="${ele.id}" >
+            <input type="text" class="form-control" name="name" id="name" th:value="${ele.name}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">类型状态</label>
+        <div class="col-sm-10">
+            <input type="radio" name="isValid" th:checked="(${ele.isValid==1})" value="1">有效
+            <input type="radio" name="isValid" th:checked="(${ele.isValid==2})" value="2">无效
+        </div>
+    </div>
+    <button type="button" onclick="addOrUpdate()" class="btn btn-primary">提交操作</button>
+</form>
+
+
+
+</body>
+</html>

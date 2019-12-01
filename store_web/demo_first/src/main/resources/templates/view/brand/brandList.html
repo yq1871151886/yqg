@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>品牌展示页面</title>
+    <div th:replace="common::html" ></div>
+</head>
+<body>
+<div class="layui-collapse" lay-filter="test1">
+    <form class="layui-form" id="addstu1">
+        <div class="layui-colla-item">
+            <h2 class="layui-colla-title">品牌查询</h2>
+            <div class="layui-colla-content layui-show">
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label" style="width: 100px">品牌名称：</label>
+                        <div class="layui-input-inline">
+                            <input type="tel" id="brandName" lay-verify="required|phone" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label" style="width: 100px">是否有效：</label>
+                        <div class="layui-input-block">
+                            <input type="radio" name="brandStatus" value="1" title="有效">
+                            <input type="radio" name="brandStatus" value="2" title="无效">
+                        </div>
+                    </div>
+                </div>
+
+                <center>
+                    <div class="layui-inline">
+                        <a class="layui-btn search_btn " href="javascript:;" id="searchBtn"  data-type="getInfo" style="margin-left: 15px;" onclick="searchBrand();">开始查询</a>
+                        <!--<button type="reset" class="layui-btn layui-btn-primary">清空</button>-->
+                    </div>
+                </center>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<div class="layui-card">
+    <div class="layui-card-header">商品信息列表
+        <div style="float: right">
+            <button class="layui-btn layui-btn-warm" onclick="addOrUpdateBrand()">增加品牌信息</button>
+        </div>
+    </div>
+    <div class="layui-card-body">
+        <table class="layui-hide" id="brand"  lay-filter="brand"></table>
+    </div>
+</div>
+<script type="text/javascript" th:inline="none">
+    layui.use(['element','util','form','table'], function () {
+        var form = layui.form;
+        var element = layui.element;
+        element.on('nav(test1)', function (elem) {
+            console.log(elem); //得到当前点击的DOM对象
+        });
+
+        //监听折叠
+        element.on('collapse(test1)', function(data){
+            //layer.msg('展开状态：'+ data.show);
+        });
+    });
+
+
+
+
+
+    function where() {
+        var brandName = $("#brandName").val();
+        var brandStatus = $("[name='brandStatus']:checked").val();
+
+
+        var jsonData = {};
+        jsonData.brandName=brandName;
+        jsonData.status=brandStatus;
+        return jsonData;
+    }
+
+
+    function searchBrand(){
+        var jsonData  = where();
+
+        //重新加载列表并传参
+        layui.table.reload('brand',{
+                where:jsonData
+                ,page:
+                    {
+                        curr: 1 //重新从第 1 页开始
+                    }
+            }
+
+        );
+
+    }
+
+
+
+
+    /*查询*/
+    layui.use('table', function(){
+        var table = layui.table;
+
+        table.render({
+            elem: '#brand'
+            ,url:'/brand/queryBrandPage'
+            ,page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
+                layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
+                //,curr: 5 //设定初始在第 5 页
+                ,groups: 1 //只显示 1 个连续页码
+                ,first: false //不显示首页
+                ,last: false //不显示尾页
+
+            }
+            ,cols: [[
+                {field:'id', width:80, title: 'ID', sort: true}
+                ,{field:'brandName', width:100, title: '品牌名称'}
+                ,{field:'brandPhone', width:100, title: '品牌联系电话'}
+                ,{field:'status', width:100, title: '是否有效',templet:function (d) {
+                        return d.status==1?"有效":"无效";
+                    }}
+                ,{field:'image', width:100, title: '图片',templet:function (d) {
+                        return '<div><img style="height:100px;width:100px;" src="'+"/"+d.image+'"></div>';
+                    }
+                }
+                , {fixed: 'right', align: 'center', width: 200, toolbar: '#barDemo'}
+            ]]
+
+        });
+    });
+
+
+
+    function addOrUpdateBrand() {
+
+        $.post({
+            url:"/brand/toAddOrUpdateBrand",
+            dateType:"html",
+            success:function (result) {
+
+                var dialog = bootbox.dialog({
+                    title: '商品新增页面',
+                    message: result,
+                    size: 'large',
+                    buttons: {
+                        cancel: {
+                            label: "取消",
+                            className: 'btn-danger',
+                            callback: function(){
+                                console.log('Custom cancel clicked');
+                            }
+                        },
+                        ok: {
+                            label: "确认",
+                            className: 'btn-info',
+                            callback: function(){
+                                $.post({
+                                    data:$("#addOrUpdateBrand").serialize(),
+                                    url:"/brand/addBrand",
+                                    dataType:"json",
+                                    traditional:true,
+                                    success:function (result) {
+                                        alert(result.message);
+                                        layui.table.reload('brand');
+                                    }
+                                })
+                                /*traditional:true,*/
+                                console.log('Custom OK clicked');
+                            }
+                        }
+                    }
+                });
+            }
+        })
+    }
+
+
+
+    layui.table.on('tool(brand)',function (obj) {
+        var data = obj.data;
+
+        if (obj.event=='edit'){
+            $.post({
+                data:{id:data.id},
+                url:"/brand/toAddOrUpdateBrand",
+                dataType:"html",
+                success:function (result) {
+
+
+                    var dialog = bootbox.dialog({
+                        title: "修改页面",
+                        message: result,
+                        size: 'large',
+                        buttons: {
+                            cancel: {
+                                label: "关闭",
+                                className: 'btn-danger',
+                                callback: function(){
+                                    console.log('Custom cancel clicked');
+                                }
+                            },
+                            ok: {
+                                label: "确认",
+                                className: 'btn-info',
+                                callback: function(){
+                                    $.post({
+                                        data:$("#addOrUpdateBrand").serialize(),
+                                        url:"/brand/addBrand",
+                                        dataType:"json",
+                                        success:function (result) {
+                                            bootbox.alert(result.message);
+                                            layui.table.reload('brand');
+                                        }
+                                    })
+                                    console.log('Custom OK clicked');
+                                }
+                            }
+                        }
+                    });
+                }
+            })
+        }
+        if (obj.event=='del'){
+            bootbox.confirm({
+                title: "是否确认删除?",
+                message: "请选择确认或者取消.",
+                buttons: {
+                    cancel: {
+                        label: '<i class="fa fa-times"></i> 取消'
+                    },
+                    confirm: {
+                        label: '<i class="fa fa-check"></i> 确认'
+                    }
+                },
+                callback: function (result) {
+                    if (result) {
+                        $.post({
+                            data:{id:data.id},
+                            url:"/brand/deleteBrand",
+                            dataType:"json",
+                            success:function (result) {
+                                bootbox.alert(result.message);
+                                layui.table.reload('brand');
+                            }
+                        })
+
+
+                    }
+                    console.log('This was logged in the callback: ' + result);
+                }
+            });
+
+
+
+        }
+
+
+
+
+    })
+
+</script>
+
+
+<script type="text/html">
+
+
+</script>
+
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fh.dao.BrandDao">
+    <cache-ref namespace="com.fh.dao.BrandDao"/>
+
+    <sql id="where">
+        <where>
+            <if test="brand.status!=null">
+                and status = #{brand.status}
+            </if>
+        </where>
+
+    </sql>
+
+    <select id="queryBrandCount" resultType="long">
+          select count(id) from r_brand
+            <include refid="where"></include>
+    </select>
+    <select id="queryBrandPage" resultType="com.fh.bean.vo.BrandVo">
+          select id,brandName,brandPhone,status,image from r_brand
+            <include refid="where"></include>
+              limit #{start},#{brand.limit}
+    </select>
+    <delete id="deleteElectricidAndBrandByBrandid" parameterType="string">
+        delete from relectric_brandid where brandid = #{brandid}
+    </delete>
+
+
+    <insert id="addelectricAndBrand">
+      INSERT INTO relectric_brandid (id,electricid,brandid) VALUES ( REPLACE(UUID(),"-",""),#{electricid},#{brandid})
+    </insert>
+
+</mapper>
