@@ -67,8 +67,11 @@ public class ShopController {
         }
         return s;
     }
-
-
+    @GetMapping("/queryStockByShopId/{shopId}")
+    public Integer queryStockByShopId(@PathVariable Integer shopId){
+        Integer stock = shopService.queryStockByShopId(shopId);
+        return stock;
+    }
 
 
 

@@ -14,11 +14,14 @@ public class CopyFile {
 
 
     public static String copyFile(MultipartFile image, String path){
+        //获取文件名称
         String imageName = image.getOriginalFilename();
+        //截取文件后缀
         imageName = imageName.substring(imageName.lastIndexOf("."));
+        //重命名文件
         long l = System.currentTimeMillis();
         imageName = l+imageName;
-
+        //获取文件根目录，判断有没有文件夹，如果没有此文件夹对文件夹进行创建
         HttpServletRequest request = ((ServletRequestAttributes) (RequestContextHolder.currentRequestAttributes())).getRequest();
 
         String realPath = request.getServletContext().getRealPath("/");
@@ -28,6 +31,7 @@ public class CopyFile {
             file.mkdirs();
         }
         try {
+            //commonsmultipart中自带的有复制方法将图片复制到根目录文件夹下
             image.transferTo(new File(realPath+"/"+imageName));
         } catch (IOException e) {
             e.printStackTrace();

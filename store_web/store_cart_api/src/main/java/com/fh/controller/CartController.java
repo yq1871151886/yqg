@@ -45,6 +45,15 @@ public class CartController {
         return loginCode;
     }
 
+    @LoginAnnotation
+    @GetMapping("queryCartOrdersCommit")
+    public LoginCode queryCartOrdersCommit(){
+        HttpServletRequest request = UtilsTools.getSession();
+        String phone = (String) request.getAttribute("phone");
+        LoginCode loginCode = cartService.queryCartOrdersCommit(phone);
+        return loginCode;
+    }
+
 
 
 

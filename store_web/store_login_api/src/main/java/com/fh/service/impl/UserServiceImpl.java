@@ -1,18 +1,13 @@
 package com.fh.service.impl;
 
-import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.fh.bean.User;
-import com.fh.bean.po.UserPo;
-import com.fh.bean.vo.UserVo;
+import com.fh.beans.User;
 import com.fh.dao.UserDao;
 import com.fh.service.UserService;
-import com.fh.utils.Layui;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 

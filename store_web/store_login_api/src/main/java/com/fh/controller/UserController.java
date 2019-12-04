@@ -1,21 +1,19 @@
 package com.fh.controller;
 
 
-import com.fh.bean.User;
+
+import com.fh.beans.User;
 import com.fh.enumbean.LoginCode;
 import com.fh.enumbean.LoginEnum;
+import com.fh.jwt.JwtUtils;
 import com.fh.service.UserService;
-import com.fh.utils.JwtUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -32,7 +30,7 @@ public class UserController {
     @CrossOrigin(maxAge = 3000,origins = "http://localhost:8080")
     public LoginCode phoneCode(@PathVariable String phoneNum) throws IOException {
         String s = "123456";
-        redisTemplate.opsForValue().set("user"+phoneNum,s,60*3,TimeUnit.SECONDS);
+        redisTemplate.opsForValue().set("user"+phoneNum,s,60*30,TimeUnit.SECONDS);
 
         /*Map<String,Object> map = new HashMap<String, Object>();
         map.put("userPhone",phoneNum);
@@ -61,9 +59,11 @@ public class UserController {
 
         User users = userService.queryUserByPhone(phoneNum);
         redisTemplate.opsForValue().set(phoneNum,users.getCardid());
+        redisTemplate.opsForValue().set("user_"+phoneNum,users);
         Map<String,Object> map = new HashMap<String, Object>();
         map.put("userPhone",phoneNum);
         map.put(phoneNum,users.getCardid());
+        map.put("user_"+phoneNum,users);
         String token = JwtUtils.createToken(map);
 
 

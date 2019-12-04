@@ -22,6 +22,10 @@ public enum LoginEnum {
     ,LOGIN_PHONEORCODE_ISNULL(515,"请输入手机号或者验证码")
     ,LOGIN_CONTENT_LONG(516,"服务器连接超时异常")
     ,LOGIN_SERVER_BUSYNESS(516,"服务器错误")
+    ,PAY_ISNULL(517,"没有需要支付的订单")
+    ,PAY_CREATE_ERR(518,"订单生成失败")
+    ,PAY_IS_ERR(519,"订单支付失败")
+    ,PAY_IS_TIMEOUT(520,"当前支付超时")
     ;
 
 

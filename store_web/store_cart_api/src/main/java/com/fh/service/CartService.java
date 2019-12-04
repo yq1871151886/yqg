@@ -9,6 +9,8 @@ public interface CartService {
 
     LoginCode queryCart(String phone);
 
+    LoginCode queryCartOrdersCommit(String phone);
+
     LoginCode changeCheck(Integer shopId, String phone);
 
     LoginCode changeCount(Integer shopId, String type, Integer oldCount,String phone);

@@ -16,4 +16,6 @@ public interface ShopService {
     List<ShopsVo> queryShopsAllByElectricid(String electricid);
     List<ShopsVo> queryShopsByBrandid(String brandid,String electricid);
     String queryShopsByparameter(ShopsPo shops);
+
+    Integer queryStockByShopId(Integer shopId);
 }

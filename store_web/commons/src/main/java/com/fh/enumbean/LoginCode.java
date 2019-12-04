@@ -25,6 +25,9 @@ public class LoginCode {
     public static LoginCode error(LoginEnum loginEnum){
         return new LoginCode(loginEnum.getCode(),loginEnum.getMessage());
     }
+    public static LoginCode error(Integer code,String message){
+        return new LoginCode(code,message);
+    }
     public static LoginCode success(){
         return new LoginCode(LoginEnum.LOGIN_SUCCESS.getCode(),LoginEnum.LOGIN_SUCCESS.getMessage());
     }

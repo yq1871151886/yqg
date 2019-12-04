@@ -71,5 +71,11 @@ public class ShopServiceImpl implements ShopService {
         return s;
     }
 
+    @Override
+    public Integer queryStockByShopId(Integer shopId) {
+        Integer stock = shopDao.queryStockByShopId(shopId);
+        return stock;
+    }
+
 
 }

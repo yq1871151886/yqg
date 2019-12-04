@@ -1,18 +1,17 @@
 package com.fh.service.impl;
 
-import com.alibaba.druid.util.HttpClientUtils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.fh.bean.Card;
+import com.fh.beans.Card;
 import com.fh.enumbean.LoginCode;
 import com.fh.service.CartService;
 import com.fh.utils.HttpclientUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
-import sun.net.www.http.HttpClient;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,6 +53,35 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
+    public LoginCode queryCartOrdersCommit(String phone) {
+        String cartdid = (String) redisTemplate.opsForValue().get(phone);
+
+        List<Card> cards =  redisTemplate.opsForHash().values(cartdid);
+        //符合条件的list
+        List<Card> cartList = new ArrayList<Card>();
+        //商品ID集合
+        String queryStockByShopId="http://localhost:8083/shop/queryStockByShopId/";
+        BigDecimal bigDecimal = BigDecimal.valueOf(0.00);
+        for (int i = 0;i<cards.size();i++){
+            if (cards.get(i).getIsChecked()){
+                //发送商品ID，查询库存
+                String s = HttpclientUtils.doGet(queryStockByShopId + cards.get(i).getShopId());
+                Integer stock = Integer.parseInt(s);
+                if (stock>=cards.get(i).getCount()){
+                    cards.get(i).setHasStocks(true);
+                    bigDecimal=bigDecimal.add(cards.get(i).getTotal());
+                }else {
+                    cards.get(i).setHasStocks(false);
+                }
+                cartList.add(cards.get(i));
+            }
+        }
+        Map<String,Object> map = new HashMap<String, Object>();
+        map.put("card",cartList);
+        map.put("account",bigDecimal);
+        return LoginCode.success(map);
+    }
+
     public LoginCode queryCart(String phone) {
         String cartdid = (String) redisTemplate.opsForValue().get(phone);
 

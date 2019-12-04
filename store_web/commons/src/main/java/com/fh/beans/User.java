@@ -30,5 +30,7 @@ public  class User implements Serializable {
     @TableField(value = "birthday")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date    birthday;             //date,
+    @TableField(value = "cardid")
+    private String cardid;
 
 }

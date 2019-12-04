@@ -109,8 +109,8 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
+            <version>1.5.0.RELEASE</version>
         </dependency>
-
         <!--阿里云上传-->
         <dependency>
             <groupId>com.aliyun.oss</groupId>

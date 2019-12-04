@@ -1,6 +1,7 @@
 package com.fh.utils;
 
 
+import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -20,6 +21,12 @@ public class UtilsTools {
         HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
         return response;
     }
+
+
+    public static String getOrderId(){
+        return IdWorker.getIdStr();
+    }
+
 
 
 }

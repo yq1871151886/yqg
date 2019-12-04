@@ -11,6 +11,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import javax.validation.constraints.Pattern;
 import java.util.List;
 import java.util.Map;
 
@@ -34,4 +35,5 @@ public interface ShopsDao extends BaseMapper<Shops> {
     List<ShopsVo> queryShopsByparameter(@Param("shops") ShopsPo shops,@Param("start") Integer start);
 
 
+    Integer queryStockByShopId(@Param("shopId") Integer shopId);
 }

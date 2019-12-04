@@ -12,18 +12,20 @@
         <module name="store_cart_api" />
         <module name="store_electric_api" />
         <module name="store_login_api" />
+        <module name="store_order_api" />
         <module name="store_product_api" />
         <module name="store_shoplist" />
         <module name="store_web" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="commons" target="8" />
+      <module name="commons" target="1.8" />
       <module name="demo_first" target="1.8" />
       <module name="store_brand_api" target="1.8" />
       <module name="store_cart_api" target="1.8" />
       <module name="store_electric_api" target="1.8" />
-      <module name="store_login_api" target="8" />
+      <module name="store_login_api" target="1.7" />
+      <module name="store_order_api" target="1.8" />
       <module name="store_product_api" target="1.8" />
       <module name="store_shoplist" target="1.8" />
       <module name="store_web" target="1.7" />

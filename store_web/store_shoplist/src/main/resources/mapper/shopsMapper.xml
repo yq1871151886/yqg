@@ -59,7 +59,9 @@
            limit #{start},#{shops.limit}
     </select>
 
-
+    <select id="queryStockByShopId" parameterType="int" resultType="java.lang.Integer">
+        select stock from r_shop_product where id=#{shopId}
+    </select>
 
 
 </mapper>

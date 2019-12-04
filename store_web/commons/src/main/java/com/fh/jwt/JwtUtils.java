@@ -21,7 +21,7 @@ public class JwtUtils {
         payload.putAll(map);
         Long iat=System.currentTimeMillis();
         //设置jwt的失效时间
-        payload.put("exp",iat+60000l);
+        payload.put("exp",iat+300000);
         payload.put("iat",iat);
 
         //签名值就是我们的安全密钥
@@ -46,7 +46,7 @@ public class JwtUtils {
             return LoginCode.error(LoginEnum.LOGIN_TOKEN_INVALID);
         }catch (SignatureException sing){
             System.out.println("token解析失败");
-            return LoginCode.error(LoginEnum.LOGIN_TOKEN_LOSE);
+            return LoginCode.error(LoginEnum.LOGIN_TOKEN_INVALID);
         }
         return LoginCode.success(claims);
     }
